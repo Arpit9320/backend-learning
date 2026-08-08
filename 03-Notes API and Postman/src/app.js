@@ -5,12 +5,28 @@ const express = require("express");
 const app = express()
 app.use(express.json()) //middleware ko use krne ke liye ye line likhi hai
 
-app.post("/notes", (req, res)=>{
+const notes = []; 
+
+app.post("/notes", (req, res)=>{        // server me data daalne ke liye aur data frontend pr aa rha hai
 
 
-    const request = req.body  //getting data from the server
+    const request = req.body  //getting data from the frontend
     console.log(request)
+    notes.push(req.body)
 
+    res.status(201).json({
+        message: "Note created successfully"
+    })
+
+
+})
+
+app.get("/notes", (req, res)=>{        // server se data fetch krne ke liye
+
+    res.status(200).json({
+        message: "Notes fetched successfully",
+        notes:notes
+    })
 
 })
 
