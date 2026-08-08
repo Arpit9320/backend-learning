@@ -43,5 +43,20 @@ app.delete("/notes/:index", (req, res)=>{       //server se data delete krne ke 
 
 })
 
+app.patch("/notes/:index", (req, res)=>{       // server pr data update krne ke liye
+    const index = req.params.index
+    const description = req.body.description
+    const title = req.body.title
+
+
+    notes[index].title = title
+    notes[index].description = description
+
+    res.status(200).json({
+        message: "Note Updated successfully"
+    })
+
+})
+
 
 module.exports = app
