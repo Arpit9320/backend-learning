@@ -31,5 +31,17 @@ app.get("/notes", (req, res)=>{        // server se data fetch krne ke liye
 })
 
 
+app.delete("/notes/:index", (req, res)=>{       //server se data delete krne ke liye
+
+    const index = req.params.index
+
+    delete notes[index]
+
+    res.status(200).json({
+        message: "Note Deleted Successfully"
+    })
+
+})
+
 
 module.exports = app
