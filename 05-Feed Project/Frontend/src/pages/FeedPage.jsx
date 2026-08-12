@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import axios, { Axios } from "axios";
+
 
 const FeedPage = () => {
 
@@ -10,6 +12,20 @@ const FeedPage = () => {
         }
     ])
 
+
+    useEffect(()=>{
+        
+        axios.get("http://localhost:3000/Posts-Feed")
+        .then((res)=>{
+            setpost(res.data.posts)
+        })
+        .catch((err) => {
+            console.log(err);   
+        });
+
+
+    },[])
+
   return (
     <section className='flex flex-col items-center  gap-5 h-full w-full bg-[#f0f2f5] p-5'>
 
@@ -19,7 +35,7 @@ const FeedPage = () => {
             post.length > 0 ?(
                 post.map((post)=>{
                     return(
-                    <div key={post._id} className='bg-white p-5 rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.1)] w-[95%] lg:w-auto'>
+                    <div key={post._id} className='bg-white p-5 rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.1)] w-[95%] lg:w-[40%]'>
                         <img src={post.image} alt="image" className='max-w-full mt-2.5'/>
                         <p className='mb-2.5 mt-2 font-semibold'>{post.caption}</p>
                     </div>)  

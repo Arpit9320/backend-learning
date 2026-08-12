@@ -4,7 +4,7 @@ import FeedPage from "./pages/FeedPage"
 
 const App = () => {
   return (
-    <div className="bg-[#c6c6c6] h-screen w-screen ">
+    <div className="bg-[#c6c6c6] min-h-screen w-full">
       <Routes>
         <Route path = "/" element={<CreatePost/>}/>
         <Route path = "/Feeds" element={<FeedPage/>}/>
