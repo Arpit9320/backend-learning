@@ -14,10 +14,33 @@ app.post("/create-post", upload.single("image"), async (req, res)=>{
     console.log(req.body)
     console.log(req.file)
 
-    const result = await uploadFile(req.file.buffer)
+    const result = await uploadFile(req.file.buffer, req.file.originalname)
     console.log(result)
+    console.log(result.url)
+    console.log(req.body.caption)
+
+    postModel.create({
+        image: result.url,
+        caption: req.body.caption
+    })
+
+    res.status(201).json({
+        message: "Post created successfully"
+    })
 
 })
+
+app.get("/Posts-Feed", async (req, res)=>{
+
+    const posts = await postModel.find()
+
+    res.status(200).json({
+        message: "Posts fetched successfully",
+        posts:posts
+    })
+
+})
+
 
 
 
