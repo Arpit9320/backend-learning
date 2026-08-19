@@ -6,25 +6,6 @@ const {uploadFile} = require("../services/storage.service")
 
 async function createMusic(req, res){
 
-    const token  = req.cookies.token;
-
-    if(!token){
-        return res.status(401).json({
-            message: "Please Login to continue"
-        })
-    }
-
-    
-    try {
-        
-        const decoded = jwt.verify(token, process.env.JWT_SECRET)
-
-        if(decoded.role !== "artist"){
-            return res.status(403).json({
-                message: "You don't have access to create music"
-            })
-        }
-
         const {title} = req.body
         const file = req.file
 
@@ -35,7 +16,7 @@ async function createMusic(req, res){
         const music = await musicModel.create({
             uri: result.url,
             title,
-            artist: decoded.id
+            artist: req.user.id
         })
 
         res.status(200).json({
@@ -47,44 +28,18 @@ async function createMusic(req, res){
                 artist: music.artist
             }
         })
-    } catch (error) {
 
-        console.log(error)
-
-        res.status(401).json({
-            message: "Unauthorized"
-        })
-    }
-
-    
 }
 
 
 async function createAlbum(req, res) {
-    
-    const token = req.cookies.token
-
-    if(!token){
-        return res.status(401).json({
-            message: "Please Login to continue"
-        })
-    }
-
-    try {
-
-        const decoded = jwt.verify(token, process.env.JWT_SECRET)
-
-        if(decoded.role !== "artist"){
-            return res.status(403).json({
-                message: "You don't have access to create an Album"
-            })
-        }
         
         const {title, musics} = req.body
+        
 
         const album = await albumModel.create({
             title,
-            artist: decoded.id,
+            artist: req.user.id,
             musics: musics
         })
 
@@ -98,14 +53,17 @@ async function createAlbum(req, res) {
             }
         })
 
+}
 
-    } catch (error) {
-        console.log(error)
-        res.status(401).json({
-            message: "Unauthorized"
-        })
-    }
+async function getAllMusic(req, res) {
+    
+    const musics = await musicModel.find().populate("artist", "username email")
+
+    res.status(201).json({
+        message: "Musics fetched successfully",
+        musics
+    })
 
 }
 
-module.exports = {createMusic, createAlbum}
+module.exports = {createMusic, createAlbum, getAllMusic}
