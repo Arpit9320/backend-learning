@@ -47,7 +47,7 @@ async function authUser(req, res, next) {
 
     try {
         
-        const decoded = jwt.verify(token, process.env.token)
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
         if(decoded.role !== "user" && decoded.role !== "artist"){
             return res.status(403).json({
