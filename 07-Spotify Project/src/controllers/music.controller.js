@@ -1,7 +1,7 @@
 const musicModel = require("../models/music.model")
 const albumModel = require("../models/album.model")
 
-const jwt = require("jsonwebtoken")
+
 const {uploadFile} = require("../services/storage.service")
 
 async function createMusic(req, res){
@@ -11,7 +11,6 @@ async function createMusic(req, res){
 
 
         const result = await uploadFile(file.buffer.toString("base64"))
-        console.log("IMAGEKIT RESULT:", result);
 
         const music = await musicModel.create({
             uri: result.url,
@@ -63,7 +62,7 @@ async function getAllMusic(req, res) {
     .limit(3)
     .populate("artist", "username email")
 
-    res.status(201).json({
+    res.status(200).json({
         message: "Musics fetched successfully",
         musics
     })

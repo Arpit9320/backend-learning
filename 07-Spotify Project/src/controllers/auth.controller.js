@@ -21,7 +21,7 @@ async function registerUser(req, res){
     }
 
     if(userNameTaken){
-        res.status(409).json({
+        return res.status(409).json({
             message: "User Name already taken"
         })
     }
